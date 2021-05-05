@@ -10,9 +10,16 @@ Multi-plaform GCC is provided by ARM here: https://launchpad.net/gcc-arm-embedde
 
 Atmel Studio contains both make and ARM GCC toolchain. You don't need to install them in this specific use case.
 
-For all builds and platforms you will need to have the Arduino IDE installed and the board support
-package for "Arduino SAMD Boards (32-bits ARM Cortex-M0+)". You can install the latter
-from the former's "Boards Manager" UI.
+For Linux and OS X the `arm-none-eabi-gcc` package is used and can be installed from their
+respective package repositories. Windows currently uses the `gcc` provided by the Arduino IDE with
+the board support package "Arduino SAMD Boards (32-bits ARM Cortex-M0+)" installed.
+
+To fetch the required third-party libraries run the initialisation script in the root of the repo
+prior to building.
+
+```bash
+./init.sh
+```
 
 ### Windows
 
@@ -25,14 +32,20 @@ It is available natively in all distributions.
 * Atmel Studio
 An Atmel Studio **7** Makefile-based project is present at project root, just open samd21_sam_ba.atsln file in AS7.
 
+The Arduino IDE with the board support package "Arduino SAMD Boards (32-bits ARM Cortex-M0+)"
+installed is required to provide the correct version of `gcc`
+
 ### Linux
 
 Make is usually available by default.
+
+`arm-none-eabi-gcc` is available through most package managers.
 
 ### OS X
 
 Make is available through XCode package.
 
+`arm-none-eabi-gcc` is available through homebrew.
 
 ## 2- Selecting available SAM-BA interfaces
 

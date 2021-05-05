@@ -21,11 +21,11 @@ ifeq ($(OS),Windows_NT)
   # Are we using mingw/msys/msys2/cygwin?
   ifeq ($(TERM),xterm)
     T=$(shell cygpath -u $(LOCALAPPDATA))
-    MODULE_PATH?=$(T)/Arduino15/packages/arduino
+    ARM_GCC_PATH?=$(T)/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4/bin/arm-none-eabi-
     RM=rm
     SEP=/
   else
-    MODULE_PATH?=$(LOCALAPPDATA)/Arduino15/packages/arduino
+    ARM_GCC_PATH?=$(LOCALAPPDATA)/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4/bin/arm-none-eabi-
     RM=rm
     SEP=\\
   endif
@@ -33,19 +33,19 @@ else
   UNAME_S := $(shell uname -s)
 
   ifeq ($(UNAME_S),Linux)
-    MODULE_PATH?=$(HOME)/.arduino15/packages/arduino
+    ARM_GCC_PATH?=/usr/bin/arm-none-eabi-
     RM=rm
     SEP=/
   endif
 
   ifeq ($(UNAME_S),Darwin)
-    MODULE_PATH?=$(HOME)/Library/Arduino15/packages/arduino/
+    ARM_GCC_PATH?=/usr/local/bin/arm-none-eabi-
     RM=rm
     SEP=/
   endif
 endif
 
-ARM_GCC_PATH?=$(MODULE_PATH)/tools/arm-none-eabi-gcc/7-2017q4/bin/arm-none-eabi-
+MODULE_PATH?=$(abspath $(CURDIR)/../thirdparty)
 BUILD_PATH=build
 
 # -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ ELF=$(NAME).elf
 BIN=$(NAME).bin
 HEX=$(NAME).hex
 
-INCLUDES=-I"$(MODULE_PATH)/tools/CMSIS/4.5.0/CMSIS/Include/" -I"$(MODULE_PATH)/tools/CMSIS-Atmel/1.2.0/CMSIS/Device/ATMEL/"
+INCLUDES=-I"$(MODULE_PATH)/CMSIS-4.5.0/CMSIS/Include/" -I"$(MODULE_PATH)/CMSIS-Atmel/CMSIS/Device/ATMEL/"
 
 # -----------------------------------------------------------------------------
 # Linker options
