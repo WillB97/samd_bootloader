@@ -1,4 +1,5 @@
-# Arduino Zero Bootloader
+# Atmel SAMD21 Bootloader
+### Derived from the Arduino Zero Bootloader
 
 ## 1- Prerequisites
 
@@ -80,16 +81,8 @@ Before jumping to the application, the bootloader changes the VTOR register to u
 
 ## 5- How to build
 
-If not specified the makefile builds for **Arduino Zero**:
+The makefile builds both the bin and hex files.
 
 ```
 make
 ```
-
-if you want to make a custom bootloader for a derivative board you must supply all the necessary information in a `board_definitions_xxx.h` file, and add the corresponding case in `board_definitions.h`.
-For example for the **Arduino MKR1000** we use `board_definitions_arduino_mkr1000.h` and it is build with the following command:
-
-```
-BOARD_ID=arduino_mkr1000 NAME=samd21_sam_ba_arduino_mkr1000 make clean all
-```
-
