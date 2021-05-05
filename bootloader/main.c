@@ -23,8 +23,6 @@
 #include "sam_ba_serial.h"
 #include "board_definitions.h"
 #include "board_driver_led.h"
-#include "board_driver_i2c.h"
-#include "board_driver_pmic.h"
 #include "board_driver_jtag.h"
 #include "sam_ba_usb.h"
 #include "sam_ba_cdc.h"
@@ -47,10 +45,6 @@ static void jump_to_application(void) {
 }
 
 static volatile bool main_b_cdc_enable = false;
-
-#ifdef CONFIGURE_PMIC
-static volatile bool jump_to_app = false;
-#endif
 
 /**
  * \brief Check the application startup condition
@@ -106,16 +100,6 @@ static void check_start_application(void)
       return;
     }
 
-#ifdef HAS_EZ6301QI
-    // wait a tiny bit for the EZ6301QI to settle,
-    // as it's connected to RESETN and might reset
-    // the chip when the cable is plugged in fresh
-
-    for (uint32_t i=0; i<2500; i++) /* 10ms */
-      /* force compiler to not optimize this... */
-      __asm__ __volatile__("");
-#endif
-
     /* First tap */
     BOOT_DOUBLE_TAP_DATA = DOUBLE_TAP_MAGIC;
 
@@ -153,11 +137,7 @@ static void check_start_application(void)
 */
 
 //  LED_on();
-#ifdef CONFIGURE_PMIC
-  jump_to_app = true;
-#else
   jump_to_application();
-#endif
 
 }
 
@@ -188,10 +168,6 @@ int main(void)
   board_init();
   __enable_irq();
 
-#ifdef CONFIGURE_PMIC
-  configure_pmic();
-#endif
-
 #ifdef ENABLE_JTAG_LOAD
   uint32_t temp ;
   // Get whole current setup for both odd and even pins and remove odd one
@@ -205,13 +181,7 @@ int main(void)
   jtagInit();
   if ((jtagBitstreamVersion() & 0xFF000000) != 0xB0000000) {
     // FPGA is not in the bootloader, restart it
-    jtagReload();    
-  }
-#endif
-
-#ifdef CONFIGURE_PMIC
-  if (jump_to_app == true) {
-    jump_to_application();
+    jtagReload();
   }
 #endif
 
