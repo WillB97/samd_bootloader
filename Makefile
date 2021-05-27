@@ -57,7 +57,7 @@ NM=$(ARM_GCC_PATH)nm
 SIZE=$(ARM_GCC_PATH)size
 
 # -----------------------------------------------------------------------------
-CHIPNAME?=SAMD21J17
+CHIPNAME?=SAMD21G18
 include chipname.mk
 
 # Boards definitions
