@@ -1,6 +1,4 @@
-#!/bin/bash -ex
-
-BOARD_ID=arduino_zero NAME=samd21_sam_ba make clean all
+#!/bin/bash -e
 
 CHIPNAME=SAMD21E15 make clean all
 CHIPNAME=SAMD21E16 make clean all
