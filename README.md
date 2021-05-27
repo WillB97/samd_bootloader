@@ -95,7 +95,15 @@ Before jumping to the application, the bootloader changes the VTOR register to u
 ## 5- How to build
 
 The makefile builds both the bin and hex files.
+To build the bootloader for just the ATSAMD21G18A MCU use the default make command.
 
 ```
 make
 ```
+
+To build bootloaders for other ATSAMD21 MCUs set the CHIPNAME environment variable.
+```
+CHIPNAME=SAMD21J17 make
+```
+
+Alternatively to build the bootloaders for all the ATSAMD21 MCU variants the helper script `build_all_bootloaders.sh` can be used.
