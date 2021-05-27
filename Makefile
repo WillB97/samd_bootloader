@@ -45,7 +45,7 @@ else
   endif
 endif
 
-MODULE_PATH?=$(abspath $(CURDIR)/../thirdparty)
+MODULE_PATH?=$(abspath $(CURDIR)/thirdparty)
 BUILD_PATH=build
 
 # -----------------------------------------------------------------------------
