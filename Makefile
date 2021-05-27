@@ -57,14 +57,17 @@ NM=$(ARM_GCC_PATH)nm
 SIZE=$(ARM_GCC_PATH)size
 
 # -----------------------------------------------------------------------------
+CHIPNAME?=SAMD21J17
+include chipname.mk
+
 # Boards definitions
 BOARD_ID?=arduino_zero
-NAME?=samd21_sam_ba
+NAME?=$(CHIPNAME)_sam_ba
 
 # -----------------------------------------------------------------------------
 # Compiler options
 SAM_BA_INTERFACES?=SAM_BA_BOTH_INTERFACES
-CFLAGS_EXTRA=-D__SAMD21J17A__ -DBOARD_ID_$(BOARD_ID) -D$(SAM_BA_INTERFACES)
+CFLAGS_EXTRA=-D$(CHIP_DEF) -DBOARD_ID_$(BOARD_ID) -D$(SAM_BA_INTERFACES)
 CFLAGS=-mthumb -mcpu=cortex-m0plus -Wall -c -std=gnu99 -ffunction-sections -fdata-sections -nostdlib -nostartfiles --param max-inline-insns-single=500
 ifdef DEBUG
   CFLAGS+=-g3 -O1 -DDEBUG=1
@@ -113,8 +116,6 @@ else
   AS_CLEAN=
 endif
 
-LD_SCRIPT=bootloader_samd21x17.ld
-
 all: print_info $(SOURCES) $(BIN) $(HEX) $(AS_BUILD)
 
 $(ELF): Makefile $(BUILD_PATH) $(OBJECTS)
@@ -155,6 +156,8 @@ print_info:
 	@echo Compiling bootloader using
 	@echo BASE PATH = $(MODULE_PATH)
 	@echo GCC  PATH = $(ARM_GCC_PATH)
+	@echo CHIP NAME = $(CHIPNAME)
+	@echo LD_SCRIPT = $(LD_SCRIPT)
 #	@echo OS        = $(OS)
 #	@echo SHELL     = $(SHELL)
 #	@echo TERM      = $(TERM)
