@@ -47,6 +47,7 @@ endif
 
 MODULE_PATH?=$(abspath $(CURDIR)/thirdparty)
 BUILD_PATH=build
+OUTPUT_PATH=out
 
 # -----------------------------------------------------------------------------
 # Tools
@@ -123,15 +124,15 @@ $(ELF): Makefile $(BUILD_PATH) $(OBJECTS)
 	"$(NM)" "$(BUILD_PATH)/$(ELF)" >"$(BUILD_PATH)/$(NAME)_symbols.txt"
 	"$(SIZE)" --format=sysv -t -x $(BUILD_PATH)/$(ELF)
 
-$(BIN): $(ELF)
+$(BIN): $(ELF) $(OUTPUT_PATH)
 	@echo ----------------------------------------------------------
 	@echo Creating flash binary
-	"$(OBJCOPY)" -O binary $(BUILD_PATH)/$< $@
+	"$(OBJCOPY)" -O binary $(BUILD_PATH)/$< $(OUTPUT_PATH)/$@
 
-$(HEX): $(ELF)
+$(HEX): $(ELF) $(OUTPUT_PATH)
 	@echo ----------------------------------------------------------
 	@echo Creating flash binary
-	"$(OBJCOPY)" -O ihex $(BUILD_PATH)/$< $@
+	"$(OBJCOPY)" -O ihex $(BUILD_PATH)/$< $(OUTPUT_PATH)/$@
 
 $(BUILD_PATH)/%.o: %.c
 	@echo ----------------------------------------------------------
@@ -143,6 +144,11 @@ $(BUILD_PATH):
 	@echo ----------------------------------------------------------
 	@echo Creating build folder
 	-mkdir $(BUILD_PATH)
+
+$(OUTPUT_PATH):
+	@echo ----------------------------------------------------------
+	@echo Creating output folder
+	-mkdir $(OUTPUT_PATH)
 
 print_info:
 	@echo ----------------------------------------------------------
@@ -157,20 +163,23 @@ print_info:
 
 copy_for_atmel_studio: $(BIN) $(HEX)
 	@echo ----------------------------------------------------------
-	@echo Atmel Studio detected, copying ELF to project root for debug
-	cp $(BUILD_PATH)/$(ELF) .
+	@echo Atmel Studio detected, copying ELF to output folder for debug
+	cp $(BUILD_PATH)/$(ELF) $(OUTPUT_PATH)/
 
 clean_for_atmel_studio:
 	@echo ----------------------------------------------------------
-	@echo Atmel Studio detected, cleaning ELF from project root
-	-$(RM) ./$(ELF)
+	@echo Atmel Studio detected, cleaning ELF from output folder
+	-$(RM) $(OUTPUT_PATH)/$(ELF)
 
 clean: $(AS_CLEAN)
 	@echo ----------------------------------------------------------
 	@echo Cleaning project
-	-$(RM) $(BIN)
-	-$(RM) $(HEX)
 	-$(RM) $(BUILD_PATH)/*.*
 	-rmdir $(BUILD_PATH)
+clean_bin:
+	@echo ----------------------------------------------------------
+	@echo Cleaning binaries
+	-$(RM) $(OUTPUT_PATH)/*.*
+	-rmdir $(OUTPUT_PATH)
 
-.phony: print_info $(BUILD_PATH)
+.phony: print_info clean_bin $(BUILD_PATH) $(OUTPUT_PATH)

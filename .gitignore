@@ -1,4 +1,5 @@
 build/
+out/
 --end-group.res
 *.ltrans.out
 *.ltrans0.s
