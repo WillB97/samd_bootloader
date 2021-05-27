@@ -1,0 +1,6 @@
+[submodule "thirdparty/CMSIS-Atmel"]
+	path = thirdparty/CMSIS-Atmel
+	url = https://github.com/adafruit/ArduinoModule-CMSIS-Atmel.git
+[submodule "thirdparty/CMSIS-4.5.0"]
+	path = thirdparty/CMSIS-4.5.0
+	url = https://github.com/ARM-software/CMSIS.git

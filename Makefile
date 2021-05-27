@@ -83,7 +83,7 @@ ELF=$(NAME).elf
 BIN=$(NAME).bin
 HEX=$(NAME).hex
 
-INCLUDES=-I"$(MODULE_PATH)/CMSIS-4.5.0/CMSIS/Include/" -I"$(MODULE_PATH)/CMSIS-Atmel/CMSIS/Device/ATMEL/"
+INCLUDES=-I"$(MODULE_PATH)/CMSIS-4.5.0/CMSIS/Include/" -I"$(MODULE_PATH)/CMSIS-Atmel/CMSIS-Atmel/CMSIS/Device/ATMEL/"
 
 # -----------------------------------------------------------------------------
 # Linker options
@@ -199,5 +199,10 @@ clean_bin:
 	@echo Cleaning binaries
 	-$(RM) $(OUTPUT_PATH)/*.*
 	-rmdir $(OUTPUT_PATH)
+
+init:
+	@echo ----------------------------------------------------------
+	@echo Initialising submodules
+	git submodule update --init
 
 .phony: print_info size clean_bin $(BUILD_PATH) $(OUTPUT_PATH)

@@ -14,11 +14,11 @@ For Linux and OS X the `arm-none-eabi-gcc` package is used and can be installed 
 respective package repositories. Windows currently uses the `gcc` provided by the Arduino IDE with
 the board support package "Arduino SAMD Boards (32-bits ARM Cortex-M0+)" installed.
 
-To fetch the required third-party libraries run the initialisation script in the root of the repo
+To fetch the required third-party libraries run the initialisation command of the makefile in the root of the repo
 prior to building.
 
 ```bash
-./init.sh
+make init
 ```
 
 ### Windows
