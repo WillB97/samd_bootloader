@@ -175,6 +175,10 @@ clean: $(AS_CLEAN)
 	@echo ----------------------------------------------------------
 	@echo Cleaning project
 	-$(RM) $(BUILD_PATH)/*.*
+	-$(RM) *.elf.ltrans.out
+	-$(RM) *.elf.ltrans0.ltrans.o
+	-$(RM) *.elf.ltrans0.o
+	-$(RM) *.elf.ltrans0.s
 	-rmdir $(BUILD_PATH)
 clean_bin:
 	@echo ----------------------------------------------------------
