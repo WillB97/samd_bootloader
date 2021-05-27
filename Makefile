@@ -164,6 +164,17 @@ print_info:
 #	"$(CC)" -v
 #	env
 
+size:
+	@echo ----------------------------------------------------------
+	@echo Size for $(CHIPNAME_U)
+	@"$(SIZE)" $(BUILD_PATH)/$(ELF) | awk -v maxflash=$(FLASH_SIZE) -v maxram=$(RAM_SIZE) '(NR==2){ \
+		flash=$$1+$$2; \
+		ram=$$2+$$3; \
+		print $$6; \
+		printf "Flash used: %d / %d (%0.2f%%)\n", flash, maxflash, flash / maxflash * 100; \
+		printf "RAM used: %d / %d (%0.2f%%)\n", ram, maxram, ram / maxram * 100 \
+	}'
+
 copy_for_atmel_studio: $(BIN) $(HEX)
 	@echo ----------------------------------------------------------
 	@echo Atmel Studio detected, copying ELF to output folder for debug
@@ -189,4 +200,4 @@ clean_bin:
 	-$(RM) $(OUTPUT_PATH)/*.*
 	-rmdir $(OUTPUT_PATH)
 
-.phony: print_info clean_bin $(BUILD_PATH) $(OUTPUT_PATH)
+.phony: print_info size clean_bin $(BUILD_PATH) $(OUTPUT_PATH)
