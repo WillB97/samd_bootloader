@@ -62,7 +62,7 @@ include chipname.mk
 
 # Boards definitions
 BOARD_ID?=arduino_zero
-NAME?=$(CHIPNAME)_sam_ba
+NAME?=$(CHIPNAME_L)_sam_ba
 
 # -----------------------------------------------------------------------------
 # Compiler options
@@ -156,7 +156,7 @@ print_info:
 	@echo Compiling bootloader using
 	@echo BASE PATH = $(MODULE_PATH)
 	@echo GCC  PATH = $(ARM_GCC_PATH)
-	@echo CHIP NAME = $(CHIPNAME)
+	@echo CHIP NAME = $(CHIPNAME_U)
 	@echo LD_SCRIPT = $(LD_SCRIPT)
 #	@echo OS        = $(OS)
 #	@echo SHELL     = $(SHELL)
