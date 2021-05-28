@@ -52,7 +52,7 @@ const char devDescriptor[] =
   0x02,   // bcdDevice H
   STRING_INDEX_MANUFACTURER,   // iManufacturer
   STRING_INDEX_PRODUCT,        // iProduct
-  0x00,   // SerialNumber, should be based on product unique ID
+  STRING_INDEX_SERIAL,         // SerialNumber
   0x01    // bNumConfigs
 };
 
@@ -162,6 +162,11 @@ char cfgDescriptor[] =
 
 USB_CDC sam_ba_cdc;
 
+/* Explictly define a global variable so that we know the address
+ * of the serial number to access it in the application code
+ */
+const char serialnum[] __attribute__((section(".sernum"))) = STRING_SERIAL;
+
 /*----------------------------------------------------------------------------
  * \brief This function is a callback invoked when a SETUP packet is received
  */
@@ -219,6 +224,11 @@ void sam_ba_usb_CDC_Enumerate(P_USB_CDC pCdc)
           case STRING_INDEX_PRODUCT:
             USB_SendString(pCdc->pUsb, STRING_PRODUCT, wLength );
           break;
+
+          case STRING_INDEX_SERIAL:
+            USB_SendString(pCdc->pUsb, serialnum, wLength );
+          break;
+
           default:
             /* Stall the request */
             USB_SendStall(pUsb, true);

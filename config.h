@@ -9,6 +9,8 @@
  */
 #define STRING_MANUFACTURER "Arduino LLC"
 #define STRING_PRODUCT "Arduino Zero"
+// Since this is written to a fixed address it must be less than 16 characters
+#define STRING_SERIAL  "XXXXXXXXXXXXXXX"
 #define USB_VID_HIGH   0x23
 #define USB_VID_LOW    0x41
 #define USB_PID_HIGH   0x00

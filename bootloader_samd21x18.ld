@@ -216,6 +216,11 @@ SECTIONS
 
 	__ram_end__ = ORIGIN(RAM) + LENGTH(RAM) -1 ;
 
+	.serials 0x1FC0: {
+		/* Insert custom serial number in the last page of the bootloader section */
+		*(.sernum*)
+	}
+
 	/* Check if data + heap + stack exceeds RAM limit */
 	ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 }
