@@ -20,14 +20,7 @@
 #ifndef _BOARD_DEFINITIONS_H_
 #define _BOARD_DEFINITIONS_H_
 
-/*
- * USB device definitions
- */
-#define STRING_PRODUCT "Arduino Zero"
-#define USB_VID_HIGH   0x23
-#define USB_VID_LOW    0x41
-#define USB_PID_HIGH   0x00
-#define USB_PID_LOW    0x4D
+#include "config.h"
 
 /*
  * If BOOT_DOUBLE_TAP_ADDRESS is defined the bootloader is started by
