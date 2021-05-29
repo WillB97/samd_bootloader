@@ -29,6 +29,7 @@ ifeq ($(OS),Windows_NT)
     RM=rm
     SEP=\\
   endif
+  PYTHON?=python
 else
   UNAME_S := $(shell uname -s)
 
@@ -43,6 +44,7 @@ else
     RM=rm
     SEP=/
   endif
+  PYTHON?=python3
 endif
 
 MODULE_PATH?=$(abspath $(CURDIR)/thirdparty)
@@ -89,6 +91,13 @@ INCLUDES=-I"$(MODULE_PATH)/CMSIS-4.5.0/CMSIS/Include/" -I"$(MODULE_PATH)/CMSIS-A
 # Linker options
 LDFLAGS=-mthumb -mcpu=cortex-m0plus -Wall -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all
 LDFLAGS+=-Wl,--warn-common -Wl,--warn-section-align -Wl,--warn-unresolved-symbols --specs=nano.specs --specs=nosys.specs
+
+# -----------------------------------------------------------------------------
+# Programmer options
+PROGRAMMER?=jlink
+ADALINK_ARGS=samd21 -p $(PROGRAMMER) -V $(CHIPNAME_L)
+
+BOOT_SERNUM_BIN?=$(OUTPUT_PATH)/boot_sernum.bin
 
 # -----------------------------------------------------------------------------
 # Source files and objects
@@ -205,4 +214,15 @@ init:
 	@echo Initialising submodules
 	git submodule update --init
 
-.phony: print_info size clean_bin $(BUILD_PATH) $(OUTPUT_PATH)
+flash:
+	@echo ----------------------------------------------------------
+	@echo Flashing bootloader
+ifeq ($(SERNUM),)  # Don't insert a blank serial number
+	$(PYTHON) thirdparty/adalink/adalink.py $(ADALINK_ARGS) -b $(OUTPUT_PATH)/$(BIN) 0x0000
+else
+	$(PYTHON) insert_serial.py $(SERNUM) $(OUTPUT_PATH)/$(BIN) $(BOOT_SERNUM_BIN)
+	$(PYTHON) thirdparty/adalink/adalink.py $(ADALINK_ARGS) -b $(BOOT_SERNUM_BIN) 0x0000
+	-$(RM) $(BOOT_SERNUM_BIN)
+endif
+
+.phony: print_info size clean_bin flash $(BUILD_PATH) $(OUTPUT_PATH)
